@@ -1,0 +1,7 @@
+/.nyc_output
+/coverage
+/node_modules
+/research
+
+/npm-debug.log
+/yarn-error.log

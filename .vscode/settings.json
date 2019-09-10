@@ -1,0 +1,8 @@
+{
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": false,
+  "editor.rulers": [80],
+
+  "standard.autoFixOnSave": true,
+  "standard.usePackageJson": true
+}
