@@ -28,6 +28,6 @@ export interface IResidualGraph {
 }
 
 export interface IMincutMaxflow {
-  readonly mincut: IFlowGraph
+  readonly mincut: ReadonlyArray<NodeId>
   readonly maxflow: Flow
 }

@@ -1,8 +1,4 @@
-import {
-  IFlowGraph,
-  IMincutMaxflow,
-  IResidualGraph
-} from './types'
+import { IFlowGraph, IMincutMaxflow, IResidualGraph } from './types'
 
 import ResidualGraph from './residual-graph'
 
@@ -19,7 +15,7 @@ function flowGraphToResidualGraph (_graph: IFlowGraph): IResidualGraph {
 // @todo
 function residualGraphToMincutMaxFlow (_graph: IResidualGraph): IMincutMaxflow {
   return {
-    mincut: { nodes: [], edges: [] },
+    mincut: [],
     maxflow: 0
   }
 }

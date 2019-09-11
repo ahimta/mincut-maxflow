@@ -1,14 +1,11 @@
-import { IResidualGraph, NodeId, IResidualEdge, IFlowEdge } from "./types"
-import ResidualEdge from "./residual-edge"
+import { IResidualGraph, NodeId, IResidualEdge, IFlowEdge } from './types'
+import ResidualEdge from './residual-edge'
 
 export default class ResidualGraph implements IResidualGraph {
   readonly nodes: ReadonlyArray<NodeId>
   readonly adjacencyMatrix: Map<NodeId, Array<IResidualEdge>>
 
-  constructor (
-    nodes: ReadonlyArray<NodeId>,
-    edges: ReadonlyArray<IFlowEdge>
-  ) {
+  constructor (nodes: ReadonlyArray<NodeId>, edges: ReadonlyArray<IFlowEdge>) {
     this.adjacencyMatrix = new Map<NodeId, Array<ResidualEdge>>()
     this.nodes = nodes
 
@@ -32,6 +29,11 @@ export default class ResidualGraph implements IResidualGraph {
     }
 
     return adjacencyMatrix.get(id) as Array<ResidualEdge>
+  }
+
+  exists (id: NodeId): boolean {
+    const { adjacencyMatrix } = this
+    return adjacencyMatrix.has(id)
   }
 
   private getGuaranteedAdjacencyList (id: NodeId): Array<ResidualEdge> {
