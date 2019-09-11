@@ -1,6 +1,6 @@
-import { Flow, NodeId, IResidualEdge } from './types'
+import { Flow, NodeId } from './types'
 
-export default class ResidualEdge implements IResidualEdge {
+export default class ResidualEdge {
   readonly from: NodeId
   readonly to: NodeId
 

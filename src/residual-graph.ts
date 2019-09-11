@@ -1,16 +1,16 @@
-import { IResidualGraph, NodeId, IResidualEdge, IFlowEdge } from './types'
+import { IFlowEdge, NodeId } from './types'
 import ResidualEdge from './residual-edge'
 
-export default class ResidualGraph implements IResidualGraph {
-  readonly nodes: ReadonlyArray<NodeId>
-  readonly adjacencyMatrix: Map<NodeId, Array<IResidualEdge>>
+export default class ResidualGraph {
+  private readonly _adjacencyMatrix: Map<NodeId, Array<ResidualEdge>>
+  private readonly _nodes: Set<NodeId>
 
   constructor (nodes: ReadonlyArray<NodeId>, edges: ReadonlyArray<IFlowEdge>) {
-    this.adjacencyMatrix = new Map<NodeId, Array<ResidualEdge>>()
-    this.nodes = nodes
+    this._adjacencyMatrix = new Map<NodeId, Array<ResidualEdge>>()
+    this._nodes = new Set<NodeId>(nodes)
 
     nodes.forEach(id => {
-      this.adjacencyMatrix.set(id, [])
+      this._adjacencyMatrix.set(id, [])
     })
 
     edges.forEach(({ from, to, capacity, flow }) => {
@@ -21,8 +21,8 @@ export default class ResidualGraph implements IResidualGraph {
     })
   }
 
-  adjacencyList (id: NodeId): ReadonlyArray<ResidualEdge> {
-    const { adjacencyMatrix } = this
+  edges (id: NodeId): ReadonlyArray<ResidualEdge> {
+    const { _adjacencyMatrix: adjacencyMatrix } = this
 
     if (!adjacencyMatrix.get(id)) {
       throw new Error(`Adjacency list for node of ID ${id} not found.`)
@@ -32,12 +32,16 @@ export default class ResidualGraph implements IResidualGraph {
   }
 
   exists (id: NodeId): boolean {
-    const { adjacencyMatrix } = this
+    const { _adjacencyMatrix: adjacencyMatrix } = this
     return adjacencyMatrix.has(id)
   }
 
+  nodes (): Set<NodeId> {
+    return this._nodes
+  }
+
   private getGuaranteedAdjacencyList (id: NodeId): Array<ResidualEdge> {
-    const { adjacencyMatrix } = this
+    const { _adjacencyMatrix: adjacencyMatrix } = this
     return adjacencyMatrix.get(id) as Array<ResidualEdge>
   }
 }
