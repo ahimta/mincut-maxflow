@@ -22,6 +22,8 @@ export default function mincutMaxflow (
     throw new Error(`Source of ${s} can't equal sink of ${t}.`)
   }
 
+  ensureFeasiblity(graph, s, t)
+
   let maxflow = getExcess(graph, t)
 
   const edgeTo = new Map<NodeId, ResidualEdge>()
@@ -33,10 +35,14 @@ export default function mincutMaxflow (
     maxflow = augmentFlow(s, t, edgeTo, bottlenick, maxflow)
   }
 
-  return {
+  const mincutMaxflow = {
     mincut: Array.from(marked),
     maxflow
   }
+
+  ensureOptimality(graph, s, t, mincutMaxflow)
+
+  return mincutMaxflow
 }
 
 function augmentFlow (
@@ -51,6 +57,58 @@ function augmentFlow (
   }
 
   return bottlenick + maxflow
+}
+
+function ensureFeasiblity (graph: ResidualGraph, s: NodeId, t: NodeId): void {
+  const sourceExcess = getExcess(graph, s)
+  const sinkExcess = getExcess(graph, t)
+
+  if (sourceExcess !== 0) {
+    throw new Error(`Invalid excess at source of ${sourceExcess}.`)
+  }
+
+  if (sinkExcess !== 0) {
+    throw new Error(`Invalid excess at sink of ${sinkExcess}.`)
+  }
+
+  for (const nodeId of Array.from(graph.nodes())) {
+    if (nodeId === s || nodeId === t) {
+      continue
+    }
+
+    const excess = getExcess(graph, nodeId)
+
+    if (excess !== 0) {
+      throw new Error(`Net flow out of ${nodeId} is ${excess} instead of 0.`)
+    }
+  }
+}
+
+function ensureOptimality (
+  graph: ResidualGraph,
+  s: NodeId,
+  t: NodeId,
+  mincutMaxflow: IMincutMaxflow
+): void {
+  ensureFeasiblity(graph, s, t)
+
+  const { mincut, maxflow } = mincutMaxflow
+
+  if (!mincut.includes(s)) {
+    throw new Error(`Source of ${s} is not in the min-cut.`)
+  }
+
+  if (mincut.includes(t)) {
+    throw new Error(`Sink of ${t} is in the min-cut.`)
+  }
+
+  const mincutFlow = getMincutFlow(graph, mincutMaxflow)
+
+  if (mincutFlow !== maxflow) {
+    throw Error(
+      `Min-cut flow of ${mincutFlow} doesn't equal max-flow of ${maxflow}.`
+    )
+  }
 }
 
 function getBottlenick (
@@ -90,6 +148,27 @@ function getGuaranteedEdge (
   id: NodeId
 ): ResidualEdge {
   return edgeTo.get(id) as ResidualEdge
+}
+
+function getMincutFlow (
+  graph: ResidualGraph,
+  mincutMaxflow: IMincutMaxflow
+): Flow {
+  let maxflowOfMincut = 0
+
+  const { mincut } = mincutMaxflow
+
+  for (const nodeId of mincut) {
+    for (const edge of graph.edges(nodeId)) {
+      const { from, to, capacity } = edge
+
+      if (from === nodeId && !mincut.includes(to)) {
+        maxflowOfMincut += capacity
+      }
+    }
+  }
+
+  return maxflowOfMincut
 }
 
 function hasAugmentingPath (
