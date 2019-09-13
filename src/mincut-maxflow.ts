@@ -36,7 +36,7 @@ export default function mincutMaxflow (
   }
 
   const mincutMaxflow = {
-    mincut: Array.from(marked),
+    mincut: marked,
     maxflow
   }
 
@@ -94,11 +94,11 @@ function ensureOptimality (
 
   const { mincut, maxflow } = mincutMaxflow
 
-  if (!mincut.includes(s)) {
+  if (!mincut.has(s)) {
     throw new Error(`Source of ${s} is not in the min-cut.`)
   }
 
-  if (mincut.includes(t)) {
+  if (mincut.has(t)) {
     throw new Error(`Sink of ${t} is in the min-cut.`)
   }
 
@@ -158,11 +158,11 @@ function getMincutFlow (
 
   const { mincut } = mincutMaxflow
 
-  for (const nodeId of mincut) {
+  for (const nodeId of Array.from(mincut)) {
     for (const edge of graph.edges(nodeId)) {
       const { from, to, capacity } = edge
 
-      if (from === nodeId && !mincut.includes(to)) {
+      if (from === nodeId && !mincut.has(to)) {
         maxflowOfMincut += capacity
       }
     }
