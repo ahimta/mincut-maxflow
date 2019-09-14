@@ -133,6 +133,27 @@ const examples: ReadonlyArray<IExample> = [
       mincut: new Set(['s']),
       maxflow: 5
     }
+  },
+  {
+    graph: {
+      nodes: ['s', '1', '2', 't'],
+      edges: [
+        { from: 's', to: '1', capacity: 100 },
+        { from: 's', to: '2', capacity: 100 },
+
+        { from: '1', to: '2', capacity: 1 },
+        { from: '1', to: 't', capacity: 100 },
+
+        { from: '2', to: 't', capacity: 100 },
+      ]
+    },
+    source: 's',
+    sink: 't',
+
+    mincutMaxflow: {
+      mincut: new Set(['s']),
+      maxflow: 200
+    }
   }
 ]
 
