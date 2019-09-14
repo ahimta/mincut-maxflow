@@ -63,13 +63,11 @@ function ensureFeasiblity (graph: ResidualGraph, s: NodeId, t: NodeId): void {
   const sourceExcess = getExcess(graph, s)
   const sinkExcess = getExcess(graph, t)
 
-  const currentFlow = sinkExcess
-
-  if (currentFlow + sourceExcess !== 0) {
+  if (sourceExcess !== 0) {
     throw new Error(`Invalid excess at source of ${sourceExcess}.`)
   }
 
-  if (currentFlow - sinkExcess !== 0) {
+  if (sinkExcess !== 0) {
     throw new Error(`Invalid excess at sink of ${sinkExcess}.`)
   }
 
