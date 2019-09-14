@@ -22,9 +22,11 @@ export default function mincutMaxflow (
     throw new Error(`Source of ${s} can't equal sink of ${t}.`)
   }
 
-  ensureFeasiblity(graph, s, t)
+  let currentMaxflow = 0
 
-  let maxflow = getExcess(graph, t)
+  ensureFeasiblity(graph, s, t, currentMaxflow)
+
+  currentMaxflow = getExcess(graph, t)
 
   const edgeTo = new Map<NodeId, ResidualEdge>()
   const marked = new Set<NodeId>()
@@ -32,12 +34,12 @@ export default function mincutMaxflow (
   while (hasAugmentingPath(graph, s, t, { edgeTo, marked })) {
     const bottlenick = getBottlenick(s, t, edgeTo)
 
-    maxflow = augmentFlow(s, t, edgeTo, bottlenick, maxflow)
+    currentMaxflow = augmentFlow(s, t, edgeTo, bottlenick, currentMaxflow)
   }
 
   const mincutMaxflow = {
     mincut: marked,
-    maxflow
+    maxflow: currentMaxflow
   }
 
   ensureOptimality(graph, s, t, mincutMaxflow)
@@ -59,15 +61,20 @@ function augmentFlow (
   return bottlenick + maxflow
 }
 
-function ensureFeasiblity (graph: ResidualGraph, s: NodeId, t: NodeId): void {
+function ensureFeasiblity (
+  graph: ResidualGraph,
+  s: NodeId,
+  t: NodeId,
+  currentMaxflow: Flow
+): void {
   const sourceExcess = getExcess(graph, s)
   const sinkExcess = getExcess(graph, t)
 
-  if (sourceExcess !== 0) {
+  if (currentMaxflow + sourceExcess !== 0) {
     throw new Error(`Invalid excess at source of ${sourceExcess}.`)
   }
 
-  if (sinkExcess !== 0) {
+  if (currentMaxflow - sinkExcess !== 0) {
     throw new Error(`Invalid excess at sink of ${sinkExcess}.`)
   }
 
@@ -90,9 +97,9 @@ function ensureOptimality (
   t: NodeId,
   mincutMaxflow: IMincutMaxflow
 ): void {
-  ensureFeasiblity(graph, s, t)
-
   const { mincut, maxflow } = mincutMaxflow
+
+  ensureFeasiblity(graph, s, t, maxflow)
 
   if (!mincut.has(s)) {
     throw new Error(`Source of ${s} is not in the min-cut.`)
