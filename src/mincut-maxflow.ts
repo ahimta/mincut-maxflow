@@ -184,6 +184,7 @@ function hasAugmentingPath (
 
   const queue = new Array()
   queue.push(s)
+  marked.add(s)
 
   while (queue.length !== 0 && !marked.has(t)) {
     const nodeId = queue.shift()
