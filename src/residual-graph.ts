@@ -13,8 +13,8 @@ export default class ResidualGraph {
       this._adjacencyMatrix.set(id, [])
     })
 
-    edges.forEach(({ from, to, capacity, flow }) => {
-      const edge = new ResidualEdge(from, to, capacity, flow)
+    edges.forEach(({ from, to, capacity }) => {
+      const edge = new ResidualEdge(from, to, capacity)
 
       this.getGuaranteedAdjacencyList(from).push(edge)
       this.getGuaranteedAdjacencyList(to).push(edge)

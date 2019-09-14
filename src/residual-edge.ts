@@ -7,7 +7,7 @@ export default class ResidualEdge {
   readonly capacity: Flow
   flow: Flow
 
-  constructor (from: NodeId, to: NodeId, capacity: Flow, flow: Flow) {
+  constructor (from: NodeId, to: NodeId, capacity: Flow) {
     if (from.length === 0) {
       throw Error(`Invalid from of ${from}.`)
     }
@@ -20,15 +20,11 @@ export default class ResidualEdge {
       throw Error(`Invalid capacity of ${capacity}.`)
     }
 
-    if (flow < 0 || !ResidualEdge.isFlow(flow)) {
-      throw Error(`Invalid flow of ${flow}.`)
-    }
-
     this.from = from
     this.to = to
 
     this.capacity = capacity
-    this.flow = flow
+    this.flow = 0
   }
 
   addResidualFlowTo (id: NodeId, delta: Flow): void {

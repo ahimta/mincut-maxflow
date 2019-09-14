@@ -6,7 +6,6 @@ export interface IFlowEdge {
   readonly to: NodeId
 
   readonly capacity: Flow
-  flow: Flow
 }
 
 export interface IFlowGraph {
