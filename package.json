@@ -1,5 +1,5 @@
 {
-  "name": "baseball-elimination",
+  "name": "mincut-maxflow",
   "private": true,
   "scripts": {
     "audit": "yarn audit",
