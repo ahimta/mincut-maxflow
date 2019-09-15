@@ -1,3 +1,6 @@
+/* eslint no-unused-vars: "off" */
+/* eslint @typescript-eslint/no-unused-vars: "error" */
+
 import test from 'ava'
 import { IFlowGraph, IMincutMaxflow, NodeId } from './types'
 import mincutMaxflow from './mincut-maxflow'
@@ -123,7 +126,7 @@ const examples: ReadonlyArray<IExample> = [
         { from: 'amazon', to: 't', capacity: 1 },
         { from: 'facebook', to: 't', capacity: 1 },
         { from: 'google', to: 't', capacity: 1 },
-        { from: 'yahoo', to: 't', capacity: 1 },
+        { from: 'yahoo', to: 't', capacity: 1 }
       ]
     },
     source: 's',
@@ -144,7 +147,7 @@ const examples: ReadonlyArray<IExample> = [
         { from: '1', to: '2', capacity: 1 },
         { from: '1', to: 't', capacity: 100 },
 
-        { from: '2', to: 't', capacity: 100 },
+        { from: '2', to: 't', capacity: 100 }
       ]
     },
     source: 's',

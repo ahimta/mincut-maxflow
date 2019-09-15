@@ -1,6 +1,11 @@
+/* eslint no-unused-vars: "off" */
+/* eslint @typescript-eslint/no-unused-vars: "error" */
+
 import { Flow, IFlowGraph, IMincutMaxflow, NodeId } from './types'
 import ResidualEdge from './residual-edge'
 import ResidualGraph from './residual-graph'
+
+const assert = require('assert')
 
 interface State {
   readonly edgeTo: Map<NodeId, ResidualEdge>
@@ -189,12 +194,14 @@ function hasAugmentingPath (
   edgeTo.clear()
   marked.clear()
 
-  const queue = new Array()
+  const queue: NodeId[] = []
   queue.push(s)
   marked.add(s)
 
   while (queue.length !== 0 && !marked.has(t)) {
-    const nodeId = queue.shift()
+    const nodeId: NodeId = queue.shift() as NodeId
+
+    assert(nodeId)
 
     for (const edge of graph.edges(nodeId)) {
       const other = edge.other(nodeId)

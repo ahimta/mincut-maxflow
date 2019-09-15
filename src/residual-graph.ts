@@ -1,3 +1,6 @@
+/* eslint no-unused-vars: "off" */
+/* eslint @typescript-eslint/no-unused-vars: "error" */
+
 import { IFlowEdge, NodeId } from './types'
 import ResidualEdge from './residual-edge'
 
