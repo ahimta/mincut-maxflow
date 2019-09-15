@@ -8,7 +8,7 @@
     "prettier": "prettier --write tsconfig.json *.md src/*.ts",
     "standard": "standard --fix src/*.ts",
     "start": "node src",
-    "test": "standard && ava src/*.spec.ts"
+    "test": "npm run standard && ava src/*.spec.ts"
   },
   "license": "GPL-3.0-or-later",
   "devDependencies": {
