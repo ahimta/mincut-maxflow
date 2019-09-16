@@ -83,7 +83,7 @@ function ensureFeasiblity (
     throw new Error(`Invalid excess at sink of ${sinkExcess}.`)
   }
 
-  for (const nodeId of Array.from(graph.nodes())) {
+  for (const nodeId of graph.nodes()) {
     if (nodeId === s || nodeId === t) {
       continue
     }
@@ -170,7 +170,7 @@ function getMincutFlow (
 
   const { mincut } = mincutMaxflow
 
-  for (const nodeId of Array.from(mincut)) {
+  for (const nodeId of mincut) {
     for (const edge of graph.edges(nodeId)) {
       const { from, to, capacity } = edge
 
