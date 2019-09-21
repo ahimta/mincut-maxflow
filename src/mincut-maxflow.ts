@@ -42,9 +42,16 @@ export default function mincutMaxflow (
     currentMaxflow = augmentFlow(s, t, edgeTo, bottlenick, currentMaxflow)
   }
 
+  const isSourceFull = graph
+    .edges(s)
+    .filter(({ from }) => from === s)
+    .every(({ capacity, flow }) => capacity === flow)
+
   const mincutMaxflow = {
     mincut: marked,
-    maxflow: currentMaxflow
+    maxflow: currentMaxflow,
+
+    isSourceFull
   }
 
   ensureOptimality(graph, s, t, mincutMaxflow)

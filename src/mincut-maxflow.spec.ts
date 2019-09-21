@@ -47,7 +47,8 @@ const examples: ReadonlyArray<IExample> = [
     mincutMaxflow: {
       // @hack: set elements are order in a way that makes tests pass.
       mincut: new Set(['s', '3', '6', '2']),
-      maxflow: 28
+      maxflow: 28,
+      isSourceFull: false
     }
   },
   // @note: possibly non-solvable
@@ -75,7 +76,8 @@ const examples: ReadonlyArray<IExample> = [
 
     mincutMaxflow: {
       mincut: new Set(['s']),
-      maxflow: 15
+      maxflow: 15,
+      isSourceFull: true
     }
   },
   // @note: possibly non-solvable
@@ -134,7 +136,8 @@ const examples: ReadonlyArray<IExample> = [
 
     mincutMaxflow: {
       mincut: new Set(['s']),
-      maxflow: 5
+      maxflow: 5,
+      isSourceFull: true
     }
   },
   {
@@ -155,7 +158,8 @@ const examples: ReadonlyArray<IExample> = [
 
     mincutMaxflow: {
       mincut: new Set(['s']),
-      maxflow: 200
+      maxflow: 200,
+      isSourceFull: true
     }
   }
 ]
