@@ -143,12 +143,6 @@ export default function (tournament: ITournament): ITournamentPrediction {
     return { id, isEliminated, eliminatingTeams }
   })
 
-  // const predictions = tournament.teams.map(({ id }) => ({
-  //   id,
-  //   isEliminated: false,
-  //   eliminatingTeams: []
-  // }))
-
   return { teams: predictions }
 }
 

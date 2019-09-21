@@ -51,7 +51,6 @@ const examples: ReadonlyArray<IExample> = [
       isSourceFull: false
     }
   },
-  // @note: possibly non-solvable
   {
     graph: {
       nodes: ['s', '1', '2', '3', '4', 't'],
@@ -80,7 +79,6 @@ const examples: ReadonlyArray<IExample> = [
       isSourceFull: true
     }
   },
-  // @note: possibly non-solvable
   {
     graph: {
       nodes: [
