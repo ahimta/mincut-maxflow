@@ -1,0 +1,63 @@
+name: CI
+on: [push]
+jobs:
+  Ubuntu:
+    name: Run Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Set Node.js 10.x
+      uses: actions/setup-node@master
+      with:
+        version: 10.x
+
+    - name: Install yarn
+      run: npm install --global yarn
+
+    - name: Install Dependencies
+      run: yarn install --emoji
+
+    - name: Test
+      run: yarn test
+  macOS:
+    name: Run macOS
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Set Node.js 10.x
+      uses: actions/setup-node@master
+      with:
+        version: 10.x
+
+    - name: Install yarn
+      run: npm install --global yarn
+
+    - name: Install Dependencies
+      run: yarn install --emoji
+
+    - name: Test
+      run: yarn test
+  Windows:
+    name: Run Windows
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Set Node.js 10.x
+      uses: actions/setup-node@master
+      with:
+        version: 10.x
+
+    - name: Install yarn
+      run: npm install --global yarn
+
+    - name: Install Dependencies
+      run: yarn install --emoji
+
+    - name: Test
+      run: yarn test
