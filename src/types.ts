@@ -14,7 +14,7 @@ export interface IFlowGraph {
 }
 
 export interface IMincutMaxflow {
-  readonly mincut: Set<NodeId>
+  readonly mincut: ReadonlySet<NodeId>
   readonly maxflow: Flow
   readonly isSourceFull: boolean
 }

@@ -5,23 +5,31 @@ import { IFlowEdge, NodeId } from './types'
 import ResidualEdge from './residual-edge'
 
 export default class ResidualGraph {
-  private readonly _adjacencyMatrix: Map<NodeId, Array<ResidualEdge>>
-  private readonly _nodes: Set<NodeId>
+  private readonly _adjacencyMatrix: ReadonlyMap<
+    NodeId,
+    ReadonlyArray<ResidualEdge>
+  >
+
+  private readonly _nodes: ReadonlySet<NodeId>
 
   constructor (nodes: ReadonlyArray<NodeId>, edges: ReadonlyArray<IFlowEdge>) {
-    this._adjacencyMatrix = new Map<NodeId, Array<ResidualEdge>>()
+    const adjacencyMatrix = new Map<NodeId, Array<ResidualEdge>>()
     this._nodes = new Set<NodeId>(nodes)
 
     nodes.forEach(id => {
-      this._adjacencyMatrix.set(id, [])
+      adjacencyMatrix.set(id, [])
     })
 
     edges.forEach(({ from, to, capacity }) => {
       const edge = new ResidualEdge(from, to, capacity)
 
-      this.getGuaranteedAdjacencyList(from).push(edge)
-      this.getGuaranteedAdjacencyList(to).push(edge)
+      // @ts-ignore
+      adjacencyMatrix.get(from).push(edge)
+      // @ts-ignore
+      adjacencyMatrix.get(to).push(edge)
     })
+
+    this._adjacencyMatrix = adjacencyMatrix
   }
 
   edges (id: NodeId): ReadonlyArray<ResidualEdge> {
@@ -39,12 +47,7 @@ export default class ResidualGraph {
     return adjacencyMatrix.has(id)
   }
 
-  nodes (): Set<NodeId> {
+  nodes (): ReadonlySet<NodeId> {
     return this._nodes
-  }
-
-  private getGuaranteedAdjacencyList (id: NodeId): Array<ResidualEdge> {
-    const { _adjacencyMatrix: adjacencyMatrix } = this
-    return adjacencyMatrix.get(id) as Array<ResidualEdge>
   }
 }
