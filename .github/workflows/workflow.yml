@@ -1,37 +1,20 @@
-name: CI
+name: CI Pipeline
 on: [push]
 jobs:
-  Ubuntu:
-    name: Run Ubuntu
-    runs-on: ubuntu-latest
+  test:
+    name: Test on Node ${{ matrix.node_version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node_version: [10, 12]
+        os: [ubuntu-18.04, ubuntu-18.04, ubuntu-latest, macOS-latest]
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
-
-    - name: Set Node.js 10.x
-      uses: actions/setup-node@master
+    - uses: actions/checkout@v1
+    - name: Use Node ${{ matrix.node_version }}
+      uses: actions/setup-node@v1
       with:
-        version: 10.x
-
-    - name: Install yarn
-      run: npm install --global yarn
-
-    - name: Install Dependencies
-      run: yarn install --emoji
-
-    - name: Test
-      run: yarn test
-  macOS:
-    name: Run macOS
-    runs-on: macos-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@master
-
-    - name: Set Node.js 10.x
-      uses: actions/setup-node@master
-      with:
-        version: 10.x
+        version: ${{ matrix.node_version }}
 
     - name: Install yarn
       run: npm install --global yarn
