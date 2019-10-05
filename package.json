@@ -5,10 +5,13 @@
     "audit": "yarn audit",
     "coverage": "nyc --report-dir coverage npm test",
     "lint": "npm run prettier && npm run standard",
+    "outdated": "yarn outdated --emoji",
     "prettier": "prettier --write tsconfig.json *.md src/*.ts",
     "standard": "standard --fix src/*.ts",
     "start": "node src",
-    "test": "npm run standard && ava src/*.spec.ts"
+    "test": "npm run standard && ava src/*.spec.ts",
+    "upgrade": "yarn upgrade --emoji",
+    "upgrade-major": "yarn upgrade --emoji --latest"
   },
   "license": "GPL-3.0-or-later",
   "devDependencies": {
