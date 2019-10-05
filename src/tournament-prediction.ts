@@ -11,8 +11,28 @@ import mincutMaxflow from './mincut-maxflow'
 
 export default function (tournament: ITournament): ITournamentPrediction {
   const { teams } = tournament
-
   const teamsIds: ReadonlyArray<NodeId> = teams.map(({ id }) => id)
+  const teamsIdsSet = new Set(teamsIds)
+
+  if (teamsIds.length !== teamsIdsSet.size) {
+    throw new Error(`${teamsIds.length - teamsIdsSet.size} duplicate teams.`)
+  }
+
+  teams.forEach(({ id, matchesLeft, detailedMatchesLeft }) => {
+    const detailedMatchesLeftSum = Array.from(
+      detailedMatchesLeft.values()
+    ).reduce((acc, matches) => acc + matches, 0)
+
+    if (matchesLeft !== detailedMatchesLeftSum) {
+      const pair = `(${matchesLeft}, ${detailedMatchesLeftSum})`
+      throw new Error(`Incorrect matches-left for team of ${id} with ${pair}`)
+    }
+  })
+
+  // FIXME: `detailedMatchesLeft` can be incorrect accross different teams. This
+  // can be validated or just sparating the left games between teams into its
+  // own data-structure for single-source of truth:smiley:.
+
   const _teamsMatchesLeft: Map<TeamId, ReadonlyMap<TeamId, number>> = new Map()
 
   teams.forEach(team => {

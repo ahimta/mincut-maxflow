@@ -87,7 +87,7 @@ const examples: ReadonlyArray<IExample> = [
 
           matchesWon: 75,
           matchesLost: 59,
-          matchesLeft: 28,
+          matchesLeft: 21,
 
           detailedMatchesLeft: new Map([
             ['baltimore', 3],
@@ -101,7 +101,7 @@ const examples: ReadonlyArray<IExample> = [
 
           matchesWon: 71,
           matchesLost: 63,
-          matchesLeft: 28,
+          matchesLeft: 19,
 
           detailedMatchesLeft: new Map([
             ['new-york', 3],
@@ -115,7 +115,7 @@ const examples: ReadonlyArray<IExample> = [
 
           matchesWon: 69,
           matchesLost: 66,
-          matchesLeft: 27,
+          matchesLeft: 13,
 
           detailedMatchesLeft: new Map([
             ['new-york', 8],
@@ -128,7 +128,7 @@ const examples: ReadonlyArray<IExample> = [
 
           matchesWon: 63,
           matchesLost: 72,
-          matchesLeft: 27,
+          matchesLeft: 17,
 
           detailedMatchesLeft: new Map([
             ['new-york', 7],
@@ -141,7 +141,7 @@ const examples: ReadonlyArray<IExample> = [
 
           matchesWon: 49,
           matchesLost: 86,
-          matchesLeft: 27,
+          matchesLeft: 16,
 
           detailedMatchesLeft: new Map([
             ['new-york', 3],
@@ -177,7 +177,7 @@ const examples: ReadonlyArray<IExample> = [
         {
           id: 'detroit',
           isEliminated: true,
-          eliminatingTeams: ['new-york', 'boston', 'baltimore', 'toronto']
+          eliminatingTeams: ['new-york', 'baltimore', 'boston']
         }
       ]
     }

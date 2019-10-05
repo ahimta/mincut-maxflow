@@ -13,6 +13,16 @@ export default class ResidualGraph {
     const adjacencyMatrix = new Map<NodeId, Array<ResidualEdge>>()
     this._nodes = new Set<NodeId>(nodes)
 
+    if (nodes.length !== this._nodes.size) {
+      throw new Error(`${nodes.length - this._nodes.size} duplicate nodes.`)
+    }
+
+    const edgesSet = new Set(edges.map(({ from, to }) => `${from}->${to}`))
+
+    if (edges.length !== edgesSet.size) {
+      throw new Error(`${edges.length - edgesSet.size} duplicate edges.`)
+    }
+
     nodes.forEach(id => {
       adjacencyMatrix.set(id, [])
     })
