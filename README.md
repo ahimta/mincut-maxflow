@@ -23,3 +23,12 @@ yarn run test
 yarn run coverage
 yarn run audit
 ```
+
+## Upgrading Packages
+
+```bash
+yarn run outdated
+# Now review URLs and see what's new/changed from the current releases.
+yarn run upgrade # This is to cover non-major upgrades.
+# Use `yarn run upgrade-major <package>` for major upgrades.
+```
