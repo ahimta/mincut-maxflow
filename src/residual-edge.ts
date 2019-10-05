@@ -1,6 +1,3 @@
-/* eslint no-unused-vars: "off" */
-/* eslint @typescript-eslint/no-unused-vars: "error" */
-
 import { Flow, NodeId } from './types'
 
 export default class ResidualEdge {

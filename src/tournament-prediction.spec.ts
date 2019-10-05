@@ -1,6 +1,3 @@
-/* eslint no-unused-vars: "off" */
-/* eslint @typescript-eslint/no-unused-vars: "error" */
-
 import test from 'ava'
 
 import { ITournament, ITournamentPrediction } from './types'

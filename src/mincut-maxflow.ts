@@ -1,6 +1,3 @@
-/* eslint no-unused-vars: "off" */
-/* eslint @typescript-eslint/no-unused-vars: "error" */
-
 import { Flow, IFlowGraph, IMincutMaxflow, NodeId } from './types'
 import ResidualEdge from './residual-edge'
 import ResidualGraph from './residual-graph'
