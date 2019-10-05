@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "audit": "yarn audit",
-    "coverage": "nyc --report-dir coverage test",
+    "coverage": "nyc --report-dir coverage npm test",
     "lint": "npm run prettier && npm run standard",
     "prettier": "prettier --write tsconfig.json *.md src/*.ts",
     "standard": "standard --fix src/*.ts",
