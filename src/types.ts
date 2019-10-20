@@ -14,6 +14,11 @@ export interface IFlowGraph {
   readonly edges: ReadonlyArray<IFlowEdge>
 }
 
+export interface IMatch {
+  readonly date: Date
+  readonly teams: [{ id: TeamId; score: number }, { id: TeamId; score: number }]
+}
+
 export interface IMincutMaxflow {
   readonly mincut: ReadonlySet<NodeId>
   readonly maxflow: Flow
@@ -37,10 +42,24 @@ export interface ITeamPrediction {
   readonly eliminatingTeams: ReadonlyArray<TeamId>
 }
 
+export interface ITeamStanding {
+  readonly id: TeamId
+
+  readonly played: number
+  readonly wins: number
+  readonly draws: number
+  readonly losses: number
+}
+
 export interface ITournament {
   readonly teams: ReadonlyArray<ITeam>
 }
 
 export interface ITournamentPrediction {
   readonly teams: ReadonlyArray<ITeamPrediction>
+}
+
+export interface ITournamentStanding {
+  readonly teams: ReadonlyArray<ITeamStanding>
+  readonly previousMatches: ReadonlyArray<IMatch>
 }
