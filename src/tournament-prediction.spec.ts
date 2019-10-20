@@ -1,10 +1,19 @@
 import test from 'ava'
 
-import { ITournament, ITournamentPrediction } from './types'
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
+
+import {
+  ITournament,
+  ITournamentPrediction,
+  ITournamentStanding,
+  ITeamStanding,
+  IMatch
+} from './types'
 import tournamentPrediction from './tournament-prediction'
 
 interface IExample {
-  readonly tournament: ITournament
+  readonly tournament: ITournament | ITournamentStanding
   readonly prediction: ITournamentPrediction
 }
 
@@ -181,6 +190,120 @@ const examples: ReadonlyArray<IExample> = [
         }
       ]
     }
+  },
+  {
+    tournament: {
+      teams: readStanding(
+        lines('./data/english-premier-league-standing-2019-10-20.csv')
+      ),
+      previousMatches: readPreviousMatches(
+        lines('./data/english-premier-league-previous-matches-2019-10-20.csv')
+      )
+    },
+    prediction: {
+      teams: [
+        {
+          eliminatingTeams: [],
+          id: 'ARS',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'AVL',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'BHA',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'BOU',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'BUR',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'CHE',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'CRY',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'EVE',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'LEI',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'LIV',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'MAN',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'MNC',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'NEW',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'NOR',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'SHU',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'SOUT',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'TOT',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'WAT',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'WHU',
+          isEliminated: false
+        },
+        {
+          eliminatingTeams: [],
+          id: 'WOLV',
+          isEliminated: false
+        }
+      ]
+    }
   }
 ]
 
@@ -189,3 +312,61 @@ examples.forEach(({ tournament, prediction }, i) => {
     t.deepEqual(tournamentPrediction(tournament), prediction)
   })
 })
+
+function readPreviousMatches (lines): ReadonlyArray<IMatch> {
+  const matchRegex = /^(\d{4})-(\d{2})-(\d{2}),\s+([A-Z]+),\s+([A-Z]+),\s+(\d+),\s+(\d+)$/
+
+  return lines
+    .filter(line => line.match(matchRegex))
+    .map(line => line.split(/,\s+/))
+    .map(
+      ([
+        dateString,
+        firstTeamId,
+        secondTeamId,
+        firstTeamScore,
+        secondTeamScore
+      ]) => ({
+        date: new Date(dateString),
+        teams: [
+          { id: firstTeamId, score: parseInt(firstTeamScore, 10) },
+          { id: secondTeamId, score: parseInt(secondTeamScore, 10) }
+        ]
+      })
+    )
+}
+
+function readStanding (lines): ReadonlyArray<ITeamStanding> {
+  const standingRegex = /^([A-Z]+),\s+(\d+),\s+(\d+),\s+(\d+),\s+(\d+),\s+(\d+),\s+(\d+),\s+(-?\d+),\s+(\d+)$/
+
+  return lines
+    .filter(line => line.match(standingRegex))
+    .map(line => line.split(/,\s+/))
+    .map(
+      ([
+        id,
+        played,
+        wins,
+        draws,
+        losses,
+        goalsFor,
+        goalsAgainst,
+        goalsDifference,
+        points
+      ]) => ({
+        id,
+        played: parseInt(played, 10),
+        wins: parseInt(wins, 10),
+        draws: parseInt(draws, 10),
+        losses: parseInt(losses, 10),
+        goalsFor: parseInt(goalsFor, 10),
+        goalsAgainst: parseInt(goalsAgainst, 10),
+        goalsDifference: parseInt(goalsDifference, 10),
+        points: parseInt(points, 10)
+      })
+    )
+}
+
+function lines (filePath) {
+  return readFileSync(resolve(filePath), { encoding: 'utf8' }).split(/\n/)
+}
