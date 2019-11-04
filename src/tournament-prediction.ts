@@ -19,7 +19,7 @@ export default function (
     ? getTournament(inputTournament)
     : inputTournament
 
-  const { teams } = tournament
+  const { teams, matchesLeft: tournamentMatchesLeft } = tournament
   const teamsIds: ReadonlyArray<NodeId> = teams.map(({ id }) => id)
   const teamsIdsSet = new Set(teamsIds)
 
@@ -27,10 +27,10 @@ export default function (
     throw new Error(`${teamsIds.length - teamsIdsSet.size} duplicate teams.`)
   }
 
-  teams.forEach(({ id, matchesLeft, detailedMatchesLeft }) => {
-    const detailedMatchesLeftSum = Array.from(
-      detailedMatchesLeft.values()
-    ).reduce((acc, matches) => acc + matches, 0)
+  teams.forEach(({ id, matchesLeft }) => {
+    const detailedMatchesLeftSum = tournamentMatchesLeft
+      .filter(([tid1, tid2]) => tid1 === id || tid2 === id)
+      .reduce((acc, [, , matches]) => acc + matches, 0)
 
     if (matchesLeft !== detailedMatchesLeftSum) {
       const pair = `(${matchesLeft}, ${detailedMatchesLeftSum})`
@@ -38,20 +38,13 @@ export default function (
     }
   })
 
-  // FIXME: `detailedMatchesLeft` can be incorrect accross different teams. This
-  // can be validated or just sparating the left games between teams into its
-  // own data-structure for single-source of truth:smiley:.
-
-  const _teamsMatchesLeft: Map<TeamId, ReadonlyMap<TeamId, number>> = new Map()
-
-  teams.forEach(team => {
-    _teamsMatchesLeft.set(team.id, team.detailedMatchesLeft)
+  const _teamsMatchesLeft: Map<string, number> = new Map()
+  tournamentMatchesLeft.forEach(([tid1, tid2, matchesLeft]) => {
+    _teamsMatchesLeft.set(`${tid1}-${tid2}`, matchesLeft)
+    _teamsMatchesLeft.set(`${tid2}-${tid1}`, matchesLeft)
   })
 
-  const teamsMatchesLeft: ReadonlyMap<
-    TeamId,
-    ReadonlyMap<TeamId, number>
-  > = _teamsMatchesLeft
+  const teamsMatchesLeft: ReadonlyMap<string, number> = _teamsMatchesLeft
   const teamsWins: ReadonlyMap<TeamId, number> = teams.reduce(
     (_teamsWins, team) => {
       _teamsWins.set(team.id, team.matchesWon)
@@ -113,7 +106,7 @@ export default function (
       to: `${id1}-${id2}`,
 
       // @ts-ignore
-      capacity: teamsMatchesLeft.get(id1).get(id2) || 0
+      capacity: teamsMatchesLeft.get(`${id1}-${id2}`) || 0
     }))
 
     const intermediateEdges: ReadonlyArray<IFlowEdge> = flatMap(
@@ -189,54 +182,49 @@ function getTournament (tournament: ITournamentStanding): ITournament {
   const ts = teams.map(team => {
     const { id, played, wins, losses } = team
 
-    const detailedMatchesLeftEntries: ReadonlyArray<
-      [TeamId, number]
-    > = teams
-      .filter(({ id: otherTeamId }) => otherTeamId !== id)
-      .map(({ id: otherTeamId }) => [otherTeamId, matchesWithEachOtherTeam])
-
-    const detailedMatchesLeft = new Map(detailedMatchesLeftEntries)
-
     const t: ITeam = {
       id,
 
       matchesWon: wins,
       matchesLost: losses,
-      matchesLeft: totalMatchesPerTeam - played,
-
-      detailedMatchesLeft
+      matchesLeft: totalMatchesPerTeam - played
     }
 
     return t
   })
 
+  const _tournamentMatchesLeft: Array<[TeamId, TeamId, number]> = []
+  for (let i = 0; i < teams.length; i++) {
+    for (let j = i + 1; j < teams.length; j++) {
+      _tournamentMatchesLeft.push([
+        teams[i].id,
+        teams[j].id,
+        matchesWithEachOtherTeam
+      ])
+    }
+  }
+
   previousMatches.forEach(match => {
     const { teams } = match
     const [{ id: firstTeamId }, { id: secondTeamId }] = teams
 
-    const firstTeam = ts.find(({ id }) => id === firstTeamId)
-    const secondTeam = ts.find(({ id }) => id === secondTeamId)
-
-    const firstTeamDetailedMatchesLeft = firstTeam!.detailedMatchesLeft as Map<
-      TeamId,
-      number
-    >
-    const secondTeamDetailedMatchesLeft = secondTeam!
-      .detailedMatchesLeft as Map<TeamId, number>
-
-    const firstLeftMatches = firstTeamDetailedMatchesLeft.get(
-      secondTeamId
-    ) as number
-    const secondLeftMatches = secondTeamDetailedMatchesLeft.get(
-      firstTeamId
-    ) as number
-
-    firstTeamDetailedMatchesLeft.set(secondTeamId, firstLeftMatches - 1)
-    secondTeamDetailedMatchesLeft.set(firstTeamId, secondLeftMatches - 1)
+    _tournamentMatchesLeft.forEach(([tid1, tid2, matchesLeft], i) => {
+      if (
+        (tid1 === firstTeamId && tid2 === secondTeamId) ||
+        (tid1 === secondTeamId && tid2 === firstTeamId)
+      ) {
+        _tournamentMatchesLeft[i] = [tid1, tid2, matchesLeft - 1]
+      }
+    })
   })
 
+  const tournamentMatchesLeft: ReadonlyArray<
+    [TeamId, TeamId, number]
+  > = _tournamentMatchesLeft
+
   return {
-    teams: ts
+    teams: ts,
+    matchesLeft: tournamentMatchesLeft
   }
 }
 

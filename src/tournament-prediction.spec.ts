@@ -26,41 +26,35 @@ const examples: ReadonlyArray<IExample> = [
 
           matchesWon: 83,
           matchesLost: 71,
-          matchesLeft: 8,
-
-          detailedMatchesLeft: new Map([
-            ['philadelphia', 1],
-            ['new-york', 6],
-            ['montreal', 1]
-          ])
+          matchesLeft: 8
         },
         {
           id: 'philadelphia',
 
           matchesWon: 80,
           matchesLost: 79,
-          matchesLeft: 3,
-
-          detailedMatchesLeft: new Map([['atlanta', 1], ['montreal', 2]])
+          matchesLeft: 3
         },
         {
           id: 'new-york',
 
           matchesWon: 78,
           matchesLost: 78,
-          matchesLeft: 6,
-
-          detailedMatchesLeft: new Map([['atlanta', 6]])
+          matchesLeft: 6
         },
         {
           id: 'montreal',
 
           matchesWon: 77,
           matchesLost: 82,
-          matchesLeft: 3,
-
-          detailedMatchesLeft: new Map([['atlanta', 1], ['philadelphia', 2]])
+          matchesLeft: 3
         }
+      ],
+      matchesLeft: [
+        ['atlanta', 'philadelphia', 1],
+        ['atlanta', 'new-york', 6],
+        ['atlanta', 'montreal', 1],
+        ['philadelphia', 'montreal', 2]
       ]
     },
     prediction: {
@@ -96,69 +90,50 @@ const examples: ReadonlyArray<IExample> = [
 
           matchesWon: 75,
           matchesLost: 59,
-          matchesLeft: 21,
-
-          detailedMatchesLeft: new Map([
-            ['baltimore', 3],
-            ['boston', 8],
-            ['toronto', 7],
-            ['detroit', 3]
-          ])
+          matchesLeft: 21
         },
         {
           id: 'baltimore',
 
           matchesWon: 71,
           matchesLost: 63,
-          matchesLeft: 19,
-
-          detailedMatchesLeft: new Map([
-            ['new-york', 3],
-            ['boston', 2],
-            ['toronto', 7],
-            ['detroit', 7]
-          ])
+          matchesLeft: 19
         },
         {
           id: 'boston',
 
           matchesWon: 69,
           matchesLost: 66,
-          matchesLeft: 13,
-
-          detailedMatchesLeft: new Map([
-            ['new-york', 8],
-            ['baltimore', 2],
-            ['detroit', 3]
-          ])
+          matchesLeft: 13
         },
         {
           id: 'toronto',
 
           matchesWon: 63,
           matchesLost: 72,
-          matchesLeft: 17,
-
-          detailedMatchesLeft: new Map([
-            ['new-york', 7],
-            ['baltimore', 7],
-            ['detroit', 3]
-          ])
+          matchesLeft: 17
         },
         {
           id: 'detroit',
 
           matchesWon: 49,
           matchesLost: 86,
-          matchesLeft: 16,
-
-          detailedMatchesLeft: new Map([
-            ['new-york', 3],
-            ['baltimore', 7],
-            ['boston', 3],
-            ['toronto', 3]
-          ])
+          matchesLeft: 16
         }
+      ],
+      matchesLeft: [
+        ['new-york', 'baltimore', 3],
+        ['new-york', 'boston', 8],
+        ['new-york', 'toronto', 7],
+        ['new-york', 'detroit', 3],
+
+        ['baltimore', 'boston', 2],
+        ['baltimore', 'toronto', 7],
+        ['baltimore', 'detroit', 7],
+
+        ['boston', 'detroit', 3],
+
+        ['toronto', 'detroit', 3]
       ]
     },
     prediction: {
