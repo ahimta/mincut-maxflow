@@ -65,9 +65,9 @@ const examples: ReadonlyArray<IExample> = [
           eliminatingTeams: []
         },
         {
-          id: 'philadelphia',
+          id: 'montreal',
           isEliminated: true,
-          eliminatingTeams: ['atlanta', 'new-york']
+          eliminatingTeams: ['atlanta']
         },
         {
           id: 'new-york',
@@ -75,9 +75,9 @@ const examples: ReadonlyArray<IExample> = [
           eliminatingTeams: []
         },
         {
-          id: 'montreal',
+          id: 'philadelphia',
           isEliminated: true,
-          eliminatingTeams: ['atlanta']
+          eliminatingTeams: ['atlanta', 'new-york']
         }
       ]
     }
@@ -139,11 +139,6 @@ const examples: ReadonlyArray<IExample> = [
     prediction: {
       teams: [
         {
-          id: 'new-york',
-          isEliminated: false,
-          eliminatingTeams: []
-        },
-        {
           id: 'baltimore',
           isEliminated: false,
           eliminatingTeams: []
@@ -154,14 +149,19 @@ const examples: ReadonlyArray<IExample> = [
           eliminatingTeams: []
         },
         {
-          id: 'toronto',
+          id: 'detroit',
+          isEliminated: true,
+          eliminatingTeams: ['baltimore', 'boston', 'new-york']
+        },
+        {
+          id: 'new-york',
           isEliminated: false,
           eliminatingTeams: []
         },
         {
-          id: 'detroit',
-          isEliminated: true,
-          eliminatingTeams: ['new-york', 'baltimore', 'boston']
+          id: 'toronto',
+          isEliminated: false,
+          eliminatingTeams: []
         }
       ]
     }

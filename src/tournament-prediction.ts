@@ -67,7 +67,7 @@ export default function (
 
     if (possibleEliminatingTeams.length) {
       const mm: IMincutMaxflow = {
-        mincut: new Set([sourceId].concat(possibleEliminatingTeams)),
+        mincut: [sourceId].concat(possibleEliminatingTeams).sort(),
         maxflow: 0,
         isSourceFull: false
       }
@@ -149,18 +149,20 @@ export default function (
     }
   })
 
-  const predictions = ps.map(({ mincutMaxflow, team }) => {
-    const { mincut, isSourceFull } = mincutMaxflow
-    const { id } = team
-    const isEliminated = !isSourceFull
-    const eliminatingTeams = !isEliminated
-      ? []
-      : Array.from(mincut)
-        .slice(1)
-        .filter(id => teams.find(({ id: _id }) => id === _id))
+  const predictions = ps
+    .map(({ mincutMaxflow, team }) => {
+      const { mincut, isSourceFull } = mincutMaxflow
+      const { id } = team
+      const isEliminated = !isSourceFull
+      const eliminatingTeams = !isEliminated
+        ? []
+        : Array.from(mincut).filter(
+          id => id !== sourceId && teams.find(({ id: _id }) => id === _id)
+        )
 
-    return { id, isEliminated, eliminatingTeams }
-  })
+      return { id, isEliminated, eliminatingTeams }
+    })
+    .sort(({ id: id1 }, { id: id2 }) => id1.localeCompare(id2))
 
   return { teams: predictions }
 }

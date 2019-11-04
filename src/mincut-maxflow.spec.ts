@@ -42,8 +42,7 @@ const examples: ReadonlyArray<IExample> = [
     sink: 't',
 
     mincutMaxflow: {
-      // @hack: set elements are order in a way that makes tests pass.
-      mincut: new Set(['s', '3', '6', '2']),
+      mincut: ['2', '3', '6', 's'],
       maxflow: 28,
       isSourceFull: false
     }
@@ -71,7 +70,7 @@ const examples: ReadonlyArray<IExample> = [
     sink: 't',
 
     mincutMaxflow: {
-      mincut: new Set(['s']),
+      mincut: ['s'],
       maxflow: 15,
       isSourceFull: true
     }
@@ -130,7 +129,7 @@ const examples: ReadonlyArray<IExample> = [
     sink: 't',
 
     mincutMaxflow: {
-      mincut: new Set(['s']),
+      mincut: ['s'],
       maxflow: 5,
       isSourceFull: true
     }
@@ -152,7 +151,7 @@ const examples: ReadonlyArray<IExample> = [
     sink: 't',
 
     mincutMaxflow: {
-      mincut: new Set(['s']),
+      mincut: ['s'],
       maxflow: 200,
       isSourceFull: true
     }

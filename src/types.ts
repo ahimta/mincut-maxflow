@@ -20,9 +20,8 @@ export interface IMatch {
 }
 
 export interface IMincutMaxflow {
-  // FIXME: change `mincut` to a sorted array for easier testing and better
-  // usability.
-  readonly mincut: ReadonlySet<NodeId>
+  // NOTE: `mincut` is sorted for determenistic results.
+  readonly mincut: ReadonlyArray<NodeId>
   readonly maxflow: Flow
   readonly isSourceFull: boolean
 }
@@ -39,7 +38,7 @@ export interface ITeamPrediction {
   readonly id: TeamId
 
   readonly isEliminated: boolean
-  // FIXME: make sure impl. sorts `eliminatingTeams` for easier testing.
+  // NOTE: `eliminatingTeams` is sorted for determenistic results.
   readonly eliminatingTeams: ReadonlyArray<TeamId>
 }
 
@@ -58,6 +57,7 @@ export interface ITournament {
 }
 
 export interface ITournamentPrediction {
+  // NOTE: `eliminatingTeams` is sorted for determenistic results.
   readonly teams: ReadonlyArray<ITeamPrediction>
 }
 
